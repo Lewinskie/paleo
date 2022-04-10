@@ -1,6 +1,7 @@
-// import { Typography } from "@mui/material";
 import Header from "./components/Header";
 import Products from "./components/Products";
+import { Route, Routes } from "react-router-dom";
+import Product from "./screens/Product";
 
 function App() {
   return (
@@ -9,7 +10,10 @@ function App() {
         <Header />
       </header>
       <main>
-        <Products />
+        <Routes>
+          <Route exact path="/" element={<Products />}></Route>
+          <Route path="/product/:id" element={<Product />} />
+        </Routes>
       </main>
     </div>
   );
