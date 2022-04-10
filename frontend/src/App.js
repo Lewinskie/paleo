@@ -1,4 +1,6 @@
+// import { Typography } from "@mui/material";
 import Header from "./components/Header";
+import Products from "./components/Products";
 
 function App() {
   return (
@@ -6,7 +8,9 @@ function App() {
       <header>
         <Header />
       </header>
-      <main>list products</main>
+      <main>
+        <Products />
+      </main>
     </div>
   );
 }
