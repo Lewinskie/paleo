@@ -1,0 +1,32 @@
+.span {
+  position: relative;
+  top: 0.63em;
+  display: inline-block;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: rotateX(-90deg);
+  letter-spacing: 4px;
+}
+
+@keyframes drop {
+  10% {
+    opacity: 0.5;
+  }
+  20% {
+    opacity: 1;
+    top: 2.5em;
+    transform: rotateX(-360deg);
+  }
+  80% {
+    opacity: 1;
+    top: 2.5em;
+    transform: rotate(-360deg);
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    top: 5.94em;
+  }
+}

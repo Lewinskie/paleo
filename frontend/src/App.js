@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import Products from "./components/Products";
+import Products from "./screens/Products";
 import { Route, Routes } from "react-router-dom";
 import Product from "./screens/Product";
 
