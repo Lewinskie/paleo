@@ -10,6 +10,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "High quality japanese bike",
+      id: 1,
     },
     {
       name: "honda repsol",
@@ -21,6 +22,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "High quality japanese bike",
+      id: 2,
     },
     {
       name: "kawasaki ninja",
@@ -32,6 +34,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "High quality japanese bike",
+      id: 3,
     },
     {
       name: "ktm duke 390",
@@ -43,6 +46,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: "High quality autralian bike",
+      id: 4,
     },
   ],
 };

@@ -3,7 +3,7 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const data = require("./data");
+// const data = require("./data");
 
 //CONNECTION TO mongoDB
 connectDB();
@@ -16,11 +16,12 @@ app.use(cookieParser());
 app.use(cors());
 
 //ROUTES
-// app.use("/user", require("./routes/userRouter"));
-// app.use("/api", require("./routes/productRouter"));
-app.get("/api/products", (req, res) => {
-  res.send(data.products);
-});
+
+// app.get("/api/products", (req, res) => {
+//   res.send(data.products);
+// });
+
+app.use("/api", require("./routes/ProductRoute"));
 
 //PORT
 const PORT = process.env.PORT;

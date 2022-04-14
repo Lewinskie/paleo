@@ -1,10 +1,11 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import FeaturedProducts from "../components/FeaturedProducts";
 import { styled } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import logger from "use-reducer-logger";
 import Loading from "../components/Loading";
+import { Helmet } from "react-helmet-async";
 
 const Title = styled("div")({
   margin: "1rem",
@@ -24,7 +25,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Products = () => {
+const Home = () => {
   // useReducer accepts two parameters.. that is the reducer function and the default state to return initially
   const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
     products: [],
@@ -50,6 +51,9 @@ const Products = () => {
   return (
     <>
       <Title>
+        <Helmet>
+          <title>Paleo</title>
+        </Helmet>
         <Typography variant="h4">Featured Products</Typography>
       </Title>
 
@@ -68,9 +72,9 @@ const Products = () => {
               lg={4}
               xl={4}
               style={{ display: "flex", justifyContent: "center" }}
-              key={index}
+              key={item._id}
             >
-              <FeaturedProducts item={item} index={index} />
+              <FeaturedProducts item={item} />
             </Grid>
           ))
         )}
@@ -79,4 +83,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Home;

@@ -1,13 +1,21 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-// import { styled } from "@mui/system";
+import { styled } from "@mui/system";
+
+const Wrapper = styled("div")({
+  background: "#404040",
+  display: "flex",
+  padding: "1rem",
+  // position: "fixed",
+  width: "100%",
+});
 
 const Header = () => {
   return (
-    <AppBar position="static" sx={{ background: "#404040", padding: "1rem" }}>
-      <Toolbar>
-        <Typography variant="h3">
+    <Wrapper xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Container>
+        <Typography variant="h3" style={{ marginLeft: "1rem" }}>
           <Link
             to="/"
             style={{
@@ -19,8 +27,8 @@ const Header = () => {
             PALEO
           </Link>
         </Typography>
-      </Toolbar>
-    </AppBar>
+      </Container>
+    </Wrapper>
   );
 };
 
