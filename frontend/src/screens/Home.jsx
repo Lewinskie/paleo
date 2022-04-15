@@ -6,6 +6,7 @@ import axios from "axios";
 import logger from "use-reducer-logger";
 import Loading from "../components/Loading";
 import { Helmet } from "react-helmet-async";
+import MessageBox from "../components/MessageBox";
 
 const Title = styled("div")({
   margin: "1rem",
@@ -61,7 +62,7 @@ const Home = () => {
         {loading ? (
           <Loading />
         ) : error ? (
-          <div>Error</div>
+          <MessageBox>{error}</MessageBox>
         ) : (
           products.map((item, index) => (
             <Grid

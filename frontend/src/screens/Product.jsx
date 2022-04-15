@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import { Typography, Grid, Container, Button } from "@mui/material";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useContext } from "react";
 import axios from "axios";
 import Loading from "../components/Loading";
 import logger from "use-reducer-logger";
 import { styled } from "@mui/system";
 import Ratings from "../components/Rating";
 import { Helmet } from "react-helmet-async";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../utils";
+import { Store } from "../Store";
 
 const Wrapper = styled("div")({
   height: "100%",
@@ -82,18 +85,41 @@ const Product = () => {
         console.log(res.data);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", payload: error.message });
+        dispatch({ type: "FETCH_FAIL", payload: getError(error) });
       }
     };
+
     fetchData();
   }, [_id]);
+
+  // ADD TO CART FUNCTION
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    // CHECK IF ITEM ALREADY EXISTS IN THE CART
+    const existItem = cart.cartItems.find((item) => item._id === product._id);
+
+    // IF PRODUCT ALREADY IN CART, INCREASE THE QUANTITY BY ONE EACH TIME ITS ADDED TO CART ELSE ITS SHOULD REMAIN ONE
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/product/${_id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry, Product not in stock");
+      return;
+    }
+
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity },
+    });
+  };
+  console.log(state);
 
   return (
     <Wrapper>
       {loading ? (
         <Loading />
       ) : error ? (
-        <div>{error}</div>
+        <MessageBox>{error}</MessageBox>
       ) : (
         <Grid container style={{ height: "100%", width: "100%" }}>
           <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
@@ -207,7 +233,11 @@ const Product = () => {
                   </ButtonWrapper>
                 ) : (
                   <ButtonWrapper>
-                    <Button sx={{ width: "100%" }} variant="contained">
+                    <Button
+                      sx={{ width: "100%" }}
+                      variant="contained"
+                      onClick={addToCartHandler}
+                    >
                       add to cart
                     </Button>
                   </ButtonWrapper>
