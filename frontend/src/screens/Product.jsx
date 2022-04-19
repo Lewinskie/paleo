@@ -114,7 +114,7 @@ const Product = () => {
     });
     navigate("/cart");
   };
-  // console.log(state);
+
 
   return (
     <Wrapper>

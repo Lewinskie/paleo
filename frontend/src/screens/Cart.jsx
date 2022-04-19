@@ -1,7 +1,7 @@
 import { Button, IconButton, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Store } from "../Store";
 import Remove from "@mui/icons-material/Remove";
 import Add from "@mui/icons-material/Add";
@@ -23,6 +23,7 @@ const Hr = styled("div")({
 });
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -42,6 +43,10 @@ const Cart = () => {
   };
   const removeItemHandler = (item) => {
     ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+
+  const checkOutHandler = () => {
+    navigate("/signin?redirect=/shipping");
   };
 
   return (
@@ -183,7 +188,9 @@ const Cart = () => {
                   alignItems: "center",
                 }}
               >
-                <Button variant="contained">Proceed to checkout</Button>
+                <Button variant="contained" onClick={checkOutHandler}>
+                  Proceed to checkout
+                </Button>
               </div>
             </Grid>
           </Grid>
