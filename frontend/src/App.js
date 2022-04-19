@@ -5,6 +5,7 @@ import Product from "./screens/Product";
 import Footer from "./components/Footer";
 import { Container } from "@mui/material";
 import { styled } from "@mui/system";
+import Cart from "./screens/Cart";
 
 const SiteContainer = styled("div")({
   // minHeight: "100vh",
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Home />}></Route>
               <Route path="/product/:_id" element={<Product />} />
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </Container>
         </main>

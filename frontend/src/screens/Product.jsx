@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Typography, Grid, Container, Button } from "@mui/material";
 import { useEffect, useReducer, useContext } from "react";
 import axios from "axios";
@@ -70,6 +70,7 @@ const reducer = (state, action) => {
 const Product = () => {
   const params = useParams();
   const { _id } = params;
+  const navigate = useNavigate();
 
   const [{ loading, error, product }, dispatch] = useReducer(logger(reducer), {
     loading: true,
@@ -111,8 +112,9 @@ const Product = () => {
       type: "CART_ADD_ITEM",
       payload: { ...product, quantity },
     });
+    navigate("/cart");
   };
-  console.log(state);
+  // console.log(state);
 
   return (
     <Wrapper>
@@ -137,7 +139,7 @@ const Product = () => {
             lg={6}
             xl={6}
             style={{
-              background: "orange",
+              // background: "orange",
               padding: "1rem",
               width: "100%",
             }}
@@ -241,7 +243,7 @@ const Product = () => {
                       add to cart
                     </Button>
                   </ButtonWrapper>
-                )}
+                )}                                                              
               </div>
             </Grid>
           </Grid>
