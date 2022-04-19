@@ -33,7 +33,19 @@ const Header = () => {
           </Link>
         </Typography>
       </Grid>
-      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+      <Grid
+        item
+        xs={2}
+        sm={2}
+        md={2}
+        lg={2}
+        xl={2}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Link to="/cart" style={{ color: "white" }}>
           <div style={{ position: "relative" }}>
             <ShoppingCart />
@@ -41,8 +53,8 @@ const Header = () => {
               <div
                 style={{
                   background: "#1976D2",
-                  width: "30px",
-                  height: "30px",
+                  width: "25px",
+                  height: "25px",
                   borderRadius: "50%",
                   padding: "5px",
                   display: "flex",
