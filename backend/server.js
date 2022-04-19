@@ -17,11 +17,8 @@ app.use(cors());
 
 //ROUTES
 
-// app.get("/api/products", (req, res) => {
-//   res.send(data.products);
-// });
-
 app.use("/api", require("./routes/ProductRoute"));
+app.use("/api", require("./routes/UserRoute"));
 
 //PORT
 const PORT = process.env.PORT;
