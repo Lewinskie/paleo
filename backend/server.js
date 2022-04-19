@@ -23,6 +23,11 @@ app.use("/api", require("./routes/UserRoute"));
 //PORT
 const PORT = process.env.PORT;
 
+//ERROR HANDLER
+app.use((err, req, res, next) => {
+  res.status(500).send({ msg: err.message });
+});
+
 //APP LISTENER
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
