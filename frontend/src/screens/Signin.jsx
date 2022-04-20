@@ -1,9 +1,13 @@
-import React from "react";
-import { Box, styled } from "@mui/system";
+import React, { useState, useContext, useEffect } from "react";
+import { styled } from "@mui/system";
 import { Helmet } from "react-helmet-async";
 import { Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { Store } from "../Store";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
 const BigContainer = styled("div")({
   display: "flex",
@@ -26,15 +30,46 @@ const Bottom = styled("div")({
   alignItems: "center",
 });
 const Signin = () => {
+  const navigate = useNavigate();
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectInUrl ? redirectInUrl : "/";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/users/signin", {
+        email,
+        password,
+      });
+      ctxDispatch({
+        type: "USER_SIGNIN",
+        payload: data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
+      navigate(redirect || "/");
+    } catch (error) {
+      toast.error(getError(error));
+    }
+  };
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [userInfo, navigate, redirect]);
+
   return (
     <BigContainer>
       <Helmet>
         <title>Sign In</title>
       </Helmet>
-      <Box component="form">
+      <form onSubmit={submitHandler}>
         <Container>
           <Wrapper>
             <Typography variant="h3">Sign In</Typography>
@@ -46,10 +81,19 @@ const Signin = () => {
               autoComplete="email"
               type="email"
               fullWidth
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Email"
             />
           </Wrapper>
           <Wrapper>
-            <TextField required label="Password" type="password" fullWidth />
+            <TextField
+              required
+              label="Password"
+              type="password"
+              fullWidth
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter Password"
+            />
           </Wrapper>
           <Wrapper>
             <Button type="submit" variant="contained">
@@ -67,7 +111,7 @@ const Signin = () => {
             </Bottom>
           </Wrapper>
         </Container>
-      </Box>
+      </form>
     </BigContainer>
   );
 };

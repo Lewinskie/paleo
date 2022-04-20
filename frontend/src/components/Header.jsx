@@ -1,12 +1,37 @@
-import React, { useContext } from "react";
-import { Grid, Typography } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { Store } from "../Store";
+import Down from "@mui/icons-material/ArrowDropDown";
+import { styled } from "@mui/system";
+
+const DropDown = styled("div")({
+  position: "relative",
+  width: "100%",
+});
+const Wrapper = styled("div")({
+  width: "100%",
+  // padding: "10px 5px",
+  color: "white",
+  // background: "#404040",
+});
+const Hr = styled("div")({
+  width: "100%",
+  borderTop: "1px solid white",
+});
 
 const Header = () => {
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+
+  const [show, setShow] = useState(false);
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+  };
+
   return (
     <Grid
       container
@@ -35,11 +60,11 @@ const Header = () => {
       </Grid>
       <Grid
         item
-        xs={2}
-        sm={2}
-        md={2}
-        lg={2}
-        xl={2}
+        xs={1}
+        sm={1}
+        md={1}
+        lg={1}
+        xl={1}
         style={{
           display: "flex",
           justifyContent: "center",
@@ -73,6 +98,84 @@ const Header = () => {
             )}
           </div>
         </Link>
+      </Grid>
+      <Grid
+        item
+        xs={1}
+        sm={1}
+        md={1}
+        lg={1}
+        xl={1}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          // justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        {userInfo ? (
+          <>
+            <DropDown>
+              <Button onClick={() => setShow(!show, console.log(show))}>
+                {userInfo.name}
+                <Down />
+              </Button>
+              {show === true ? (
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    background: "#8f8f8f",
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRadius: "5px",
+                    transition: "all 0.5s ease",
+                    border: "1px solid white",
+                  }}
+                >
+                  <Wrapper>
+                    <Link
+                      to="/profile"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      <Typography>Profile</Typography>
+                    </Link>
+                  </Wrapper>
+                  <Hr />
+                  <Wrapper>
+                    <Link
+                      to="/orderhistory"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      <Typography>Order History</Typography>
+                    </Link>
+                  </Wrapper>
+                  <Hr />
+                  <Wrapper>
+                    <Link
+                      to="#signout"
+                      style={{ color: "black", textDecoration: "none" }}
+                      onClick={signoutHandler}
+                    >
+                      <Typography>Sign Out</Typography>
+                    </Link>
+                  </Wrapper>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    position: "absolute",
+                    display: "none",
+                  }}
+                />
+              )}
+            </DropDown>
+          </>
+        ) : (
+          <Link to="/signin" style={{ color: "white", textDecoration: "none" }}>
+            <Typography>Sign In</Typography>
+          </Link>
+        )}
       </Grid>
     </Grid>
   );

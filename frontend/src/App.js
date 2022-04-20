@@ -7,6 +7,8 @@ import { Container } from "@mui/material";
 import { styled } from "@mui/system";
 import Cart from "./screens/Cart";
 import Signin from "./screens/Signin";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SiteContainer = styled("div")({
   // minHeight: "100vh",
@@ -19,6 +21,7 @@ function App() {
   return (
     <>
       <SiteContainer>
+        <ToastContainer position="bottom-center" limit={1} />
         <header style={{ height: "13vh" }}>
           <Header />
         </header>
