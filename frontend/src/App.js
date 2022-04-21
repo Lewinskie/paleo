@@ -9,6 +9,7 @@ import Cart from "./screens/Cart";
 import Signin from "./screens/Signin";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ShippingAddress from "./screens/ShippingAddress";
 
 const SiteContainer = styled("div")({
   // minHeight: "100vh",
@@ -32,6 +33,7 @@ function App() {
               <Route path="/product/:_id" element={<Product />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/signin" element={<Signin />} />
+              <Route path="/shipping" element={<ShippingAddress />} />
             </Routes>
           </Container>
         </main>

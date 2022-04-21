@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  width: "100%";
+  flex-direction: row;
+}
+
+.wrapper > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: "#a0a0a0";
+  flex: 1;
+  width: 100%;
+}
+.wrapper > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: "#f08000";
+}
