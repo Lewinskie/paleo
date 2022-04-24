@@ -7,12 +7,16 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet-async";
 import CheckOutSteps from "../components/CheckOutSteps";
 import { styled } from "@mui/system";
 import { Store } from "../Store";
 import { Link, useNavigate } from "react-router-dom";
+import { getError } from "../utils";
+import { toast } from "react-toastify";
+import axios from "axios";
+import LoadingCircle from "../components/LoadingCircle";
 
 const Wrapper = styled("div")({
   display: "flex",
@@ -25,8 +29,25 @@ const ItemWrapper = styled("div")({
   height: "100%",
 });
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CREATE_REQUEST":
+      return { ...state, loading: true };
+    case "CREATE_SUCCESS":
+      return { ...state, loading: false };
+    case "CREATE_FAIL":
+      return { ...state, loading: false };
+
+    default:
+      return state;
+  }
+};
+
 const PlaceOrder = () => {
   const navigate = useNavigate();
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: "false",
+  });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
@@ -46,7 +67,35 @@ const PlaceOrder = () => {
   //   TOTAL PRICE
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
-  const placeOrderHandler = () => {};
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
+      const { data } = await axios.post(
+        "/api/orders",
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      ctxDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`);
+    } catch (error) {
+      dispatch({ type: "CREATE_FAIL" });
+      toast.error(getError(error));
+    }
+  };
   useEffect(() => {
     if (!cart.paymentMethod) {
       navigate("/payment");
@@ -254,6 +303,7 @@ const PlaceOrder = () => {
                   </Button>
                 </Wrapper>
               </CardActions>
+              {loading && <LoadingCircle />}
             </Card>
           </Grid>
         </Grid>
